@@ -1,0 +1,76 @@
+<html>
+<style>
+    body {    
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+
+    table {
+        border-collapse: collapse;
+        margin-top: -100px;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;       
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    table thead tr {
+        background-color: #ee9700;
+        color: #424242;
+        text-align: left;
+    }
+    table th,
+    table td {
+        padding: 12px 15px;
+    }
+
+    table tbody tr {
+        border-bottom: 1px solid #695d5d;
+        color: #a1a1a1;
+        font-weight: bold;
+    }
+
+    table tbody tr:last-of-type {
+        border-bottom: 2px solid #ee9700;
+    }
+
+    table tbody tr.active-row {       
+        color: #ee9700;
+    }
+</style>
+<script src="js/jquery.js"></script>
+<table id="scoreboard">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ping</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        Events.on("SetPlayerData", function (playerDataString) {           
+            var playerDataStringConverted = playerDataString.replace(/~#~/g, '"');           
+            var playerData = JSON.parse(playerDataStringConverted);
+            var $newContent = $('<tbody>');
+            $.each(playerData, function (i, item) {
+                var $tr = $('<tr>').append(
+                    $('<td>').text(item.Name),
+                    $('<td>').text(item.Ping),
+                );
+                if (item.IsLocalPlayer == true) {
+                    $tr.addClass('active-row');
+                }
+                $newContent.append($tr);
+            });
+            $('#scoreboard tbody').html($newContent.html());
+        });
+    });    
+</script>
+</html>
