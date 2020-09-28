@@ -6,7 +6,6 @@ Package:on(
     "Load",
     function()
         Scoreboard = WebUI("Scoreboard", "file:////UI/Scoreboard.html", false)
-        UpdateTimer = Timer:SetTimeout(300, UpdateCheck)
     end
 )
 
@@ -22,6 +21,7 @@ Client:on(
     "KeyDown",
     function(keyName)
         if (keyName == "Tab" and ScoreboardVisibility == false) then
+            UpdateTimer = Timer:SetTimeout(300, UpdateCheck)
             UpdatePlayerData()
             Scoreboard:SetVisible(true)
             ScoreboardVisibility = true
@@ -33,6 +33,7 @@ Client:on(
     "KeyUp",
     function(keyName)
         if (keyName == "Tab" and ScoreboardVisibility == true) then
+            Timer:ClearTimeout(UpdateTimer)
             Scoreboard:SetVisible(false)
             ScoreboardVisibility = false
         end
